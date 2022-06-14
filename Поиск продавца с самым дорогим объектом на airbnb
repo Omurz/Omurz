@@ -1,0 +1,16 @@
+select host_id, host_name, max (price)
+from airbnb_new_york.listings
+    where host_id in 
+    
+    (select host_id
+ from airbnb_new_york.listings
+    join airbnb_new_york.neighbourhoods using (neighbourhood) 
+      join airbnb_new_york.reviews on reviews.listing_id = listings.id
+        where neighbourhood_group = 'Brooklyn' and reviews.date = '2020-04-01')
+
+group by host_id, host_name
+order by max (price) desc
+limit 1
+
+---Найдите цену самого дорогого объекта для сдачи у продавца, у которого был просмотр объявления апартаментов из Бруклина (Нью-Йорк) 1 апреля 2020 года. 
+---Нужно вывести ID продавца, имя и цену объекта. Объект может находиться в любом районе Нью-Йорка.
